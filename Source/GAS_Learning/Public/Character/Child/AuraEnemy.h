@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class GAS_LEARNING_API AAuraEnemy : public AAuraCharacterBase
 {
 	GENERATED_BODY()
