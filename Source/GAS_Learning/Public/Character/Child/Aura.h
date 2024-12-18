@@ -6,6 +6,8 @@
 #include "Character/AuraCharacterBase.h"
 #include "Aura.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
 /**
  * 
  */
@@ -13,5 +15,12 @@ UCLASS()
 class GAS_LEARNING_API AAura : public AAuraCharacterBase
 {
 	GENERATED_BODY()
-	
+public:
+	AAura();
+protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpringArmComponent> SpringArmComp;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCameraComponent> CameraComp;
 };
