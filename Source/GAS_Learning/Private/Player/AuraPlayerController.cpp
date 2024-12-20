@@ -5,6 +5,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputAction.h"
+#include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -39,6 +40,72 @@ void AAuraPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AAuraPlayerController::MoveFunction);
 }
+
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	CursorTrace();
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if(!CursorHit.bBlockingHit)//是否有指向的物体（包括没有IEnemyInterface接口的actor,指向的是虚无，其实是怕敌人在地图边缘，光标向旁边一移就指向虚无了，这种情况非常少见（因为会设计空气墙），但存在），如果没有
+	{
+		if(ThisActor != nullptr)	//首先清除上一个物体的高亮，但由于还没有进行LastActor = ThisActor赋值操作，所以上一个物体还是ThisActor
+		{
+			ThisActor->UnHighLightActor();
+			return;	
+		}
+	}
+	//ThisActor是当前指向的Actor，LastActor是上一次指向的Actor
+	LastActor = ThisActor;
+	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+	/*
+	 *鼠标事件：
+	 *A.鼠标未指向任何拥有IEnemyInterface接口的actor
+	 *	-什么也不会发生
+	 *B.鼠标第一次指向拥有IEnemyInterface接口的actor
+	 *	-ThisActor高亮
+	 *C.鼠标之前指向了拥有IEnemyInterface接口的actor，现在没有指向IEnemyInterface接口的actor
+	 *	-LastActor取消高亮
+	 *D.鼠标之前指向了拥有IEnemyInterface接口的actor，现在也指向IEnemyInterface接口的actor，但是不是同一个
+	 *	-LastActor取消高亮，ThisActor高亮
+  	 *E.鼠标之前指向了拥有IEnemyInterface接口的actor，现在也指向IEnemyInterface接口的actor，是同一个
+	 *	-ThisActor高亮或者什么都不做,其实什么都不做都行，因为先前的也没取消高亮，如果相同的话就还是亮着的
+	 */
+	if(LastActor == nullptr)	//Last为空
+	{
+		if(ThisActor != nullptr)
+		{
+			ThisActor->HighLightActor();		//情况B
+		}else
+		{
+			return;								//情况A
+		}
+	}
+	else//Last不为空
+	{
+		if(ThisActor == nullptr)
+		{
+			LastActor->UnHighLightActor();	//情况C
+		}
+		else
+		{
+			if(ThisActor != LastActor)
+			{
+				LastActor->UnHighLightActor();		//情况D
+				ThisActor->HighLightActor();
+			}else
+			{
+				//情况E
+				return;
+			}
+		}
+	}
+}
+
 
 void AAuraPlayerController::MoveFunction(const FInputActionValue& InputActionValue)
 {
