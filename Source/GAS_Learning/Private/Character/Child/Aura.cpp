@@ -3,9 +3,11 @@
 
 #include "Character/Child/Aura.h"
 
+#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Player/AuraPlayerState.h"
 
 AAura::AAura()
 {
@@ -25,4 +27,25 @@ AAura::AAura()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+}
+
+void AAura::InitAbilitySystem()
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);	//相当于断言检测AuraPlayerState是否有效，无效则跳出
+	AbilitySystemComponent = AuraPlayerState->AbilitySystemComponent;
+	AbilitySystemComponent->InitAbilityActorInfo(AuraPlayerState,this);
+	AttributeSet = AuraPlayerState->AttributeSet;
+}
+
+void AAura::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	InitAbilitySystem();
+}
+
+void AAura::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	InitAbilitySystem();
 }

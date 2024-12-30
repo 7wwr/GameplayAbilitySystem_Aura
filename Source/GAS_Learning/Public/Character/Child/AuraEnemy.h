@@ -16,11 +16,15 @@ class GAS_LEARNING_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInte
 {
 	GENERATED_BODY()
 
-public:
+public:	//API
 	AAuraEnemy();
+
+protected:
+	virtual void BeginPlay() override;
 	
+public:	//自定义功能函数
+	//高亮轮廓功能
 	virtual void HighLightActor() override;
-	
 	virtual void UnHighLightActor() override;
 
 

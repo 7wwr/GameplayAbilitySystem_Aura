@@ -4,7 +4,7 @@
 #include "Character/Child/AuraEnemy.h"
 
 #include "AbilitySystem/AuraAbilitySystemComponentBase.h"
-#include "AbilitySystem/AuraAttributeSetBase.h"
+//#include "AbilitySystem/AuraAttributeSetBase.h"
 #include "Character/Child/Aura.h"
 
 AAuraEnemy::AAuraEnemy()
@@ -12,8 +12,15 @@ AAuraEnemy::AAuraEnemy()
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponentBase>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
-	AttributeSet = CreateDefaultSubobject<UAuraAttributeSetBase>("AttributeSet");
+//	AttributeSet = CreateDefaultSubobject<UAuraAttributeSetBase>("AttributeSet");
+}
+
+void AAuraEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	AbilitySystemComponent->InitAbilityActorInfo(this,this);
 }
 
 void AAuraEnemy::HighLightActor()
