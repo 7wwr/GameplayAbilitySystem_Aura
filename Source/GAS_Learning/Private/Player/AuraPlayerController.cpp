@@ -20,9 +20,11 @@ void AAuraPlayerController::BeginPlay()
 	
 	//获取EnhancedInputLocalPlayerSubsystem
 	UEnhancedInputLocalPlayerSubsystem * Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-
-	check(Subsystem);
-	Subsystem->AddMappingContext(AuraContext,0);	//设置优先级
+	
+	if(Subsystem)	//涉及到多人游戏，只有本地的控制器有该系统，其他玩家的在本地只是个副本（获取时为空），如果不检查是否为空则会出现野指针现象
+	{
+		Subsystem->AddMappingContext(AuraContext,0);	//设置优先级
+	}
 
 	bShowMouseCursor = true;	//是否显示鼠标光标
 	DefaultMouseCursor = EMouseCursor::Default;		//鼠标光标种类，比如箭形或手形

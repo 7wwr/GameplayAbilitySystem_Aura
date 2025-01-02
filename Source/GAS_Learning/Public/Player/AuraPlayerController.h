@@ -36,6 +36,7 @@ private:
 
 	//这里为什么把指针设为IEnemyInterface，个人认为是需要这俩变量的功能也仅仅是为了高亮目标，而使用IEnemyInterface接口
 	//能保证只调用到那两个高亮功能的函数（多继承特性，通过基类指针只能调用到基类声明的函数，无法查询其他基类以及派生类实现的自己独有的函数）
+	//其实不是的，意思是只要有这个接口的Actor都符合，没那么多讲究
 	TObjectPtr<IEnemyInterface> LastActor;
 	TObjectPtr<IEnemyInterface> ThisActor;
 
