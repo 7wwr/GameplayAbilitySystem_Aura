@@ -38,11 +38,11 @@ void AAura::InitAbilitySystem()
 	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(ThisPlayerState);
 	check(AuraPlayerState);	//相当于断言检测AuraPlayerState是否有效，无效则跳出
 	//获取ASC组件
-	AbilitySystemComponent = AuraPlayerState->AbilitySystemComponent;
+	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	//初始化ASC组件
 	AbilitySystemComponent->InitAbilityActorInfo(AuraPlayerState,this);
 	//获取AS组件
-	AttributeSet = AuraPlayerState->AttributeSet;
+	AttributeSet = AuraPlayerState->GetAttributeSet();
 }
 
 void AAura::InitHUDSystem()

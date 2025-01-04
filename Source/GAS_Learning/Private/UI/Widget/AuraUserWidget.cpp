@@ -8,3 +8,8 @@ void UAuraUserWidget::SetWidgetController(UObject* InWidgetController)
 	WidgetController = InWidgetController;
 	WidgetControllerSetCompleted();
 }
+
+UObject* UAuraUserWidget::GetWidgetController()
+{
+	return WidgetController;
+}

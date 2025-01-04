@@ -14,13 +14,17 @@ class GAS_LEARNING_API UAuraUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<UObject> WidgetController;
 
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetController(UObject* InWidgetController);
 
+	UFUNCTION(BlueprintCallable)
+	UObject* GetWidgetController();
+
 protected:
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UObject> WidgetController;
+	
 	UFUNCTION(BlueprintImplementableEvent)
 	void WidgetControllerSetCompleted();
 };

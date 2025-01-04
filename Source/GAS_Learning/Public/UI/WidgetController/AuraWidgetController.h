@@ -43,6 +43,12 @@ class GAS_LEARNING_API UAuraWidgetController : public UObject
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& Params);
+
+	//广播初始值
+	virtual void BroadcastInitialValues();
+
+	//用来定义（盛放）所有需要绑定监听事件的函数
+	virtual void BindListeningEvents();
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

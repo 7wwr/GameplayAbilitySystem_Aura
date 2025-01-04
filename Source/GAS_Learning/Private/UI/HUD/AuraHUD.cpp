@@ -10,10 +10,11 @@
 
 UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
-	if(OverlayWidget == nullptr)
+	if(OverlayWidgetController == nullptr)
 	{
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this,OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(WCParams);
+		return OverlayWidgetController;
 	}
 	return OverlayWidgetController;
 }
@@ -30,11 +31,15 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	OverlayWidget = Cast<UAuraUserWidget>(Widget);
 
 	//构建GetOverlayWidgetController函数所需要的参数结构体
-	const FWidgetControllerParams WidgetControllerParams = FWidgetControllerParams(PC,PS,ASC,AS);
+	const FWidgetControllerParams WidgetControllerParams(PC,PS,ASC,AS);
 	//获取或构建Widget所需要的Controller
-	UAuraWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
+	UOverlayWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
+	
 	//将获取到的Controller绑定到相关Widget
 	OverlayWidget->SetWidgetController(WidgetController);
+	
+	//用于初始化数据。需要使用AS组件，所以要保证AS组件有效。执行完上面那一句代码就表明WidgetController的AS组件是有效的了
+	WidgetController->BroadcastInitialValues();
 	//完成上面操作后将Widget添加到视口上
 	Widget->AddToViewport();
 }
