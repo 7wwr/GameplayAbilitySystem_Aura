@@ -24,6 +24,8 @@ public:
 	UAuraAttributeSet();
 
 protected:
+	//预修改
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	//网络同步
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
