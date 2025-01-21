@@ -44,6 +44,9 @@ protected:
 	bool bDestroyEffectActor = false;
 
 	TMap<FActiveGameplayEffectHandle ,UAbilitySystemComponent*> ActiveGameplayEffectsMap;
+	//物品等级
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="ActorLevel")
+	float ActorLevel = 1.f;
 
 	//即时效果
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="AuraEffect")
@@ -68,6 +71,8 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="AuraEffect")
 	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::DoNotRemove;
+
+	
 protected:
 	UFUNCTION(BlueprintCallable, Category="AuraEffect")
 	void AppleEffectToTarget(AActor* TargetActor,TSubclassOf<UGameplayEffect> GameplayEffectClass);

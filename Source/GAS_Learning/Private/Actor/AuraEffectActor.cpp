@@ -40,7 +40,7 @@ void AAuraEffectActor::AppleEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	{
 		FGameplayEffectContextHandle EffectContextHandle = TargetASC->MakeEffectContext();
 		EffectContextHandle.AddSourceObject(this);
-		FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass,1.f,EffectContextHandle);
+		FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass,ActorLevel,EffectContextHandle);
 		//使用ActiveEffectHandle句柄来储存活跃的效果对应的句柄
 		const FActiveGameplayEffectHandle ActiveEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*(EffectSpecHandle.Data.Get()));
 		//判断是否为无限效果（也可以通过这一方式来修改效果类型，但非常不建议在运行时修改类型）
